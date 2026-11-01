@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lahore area guides and Area Match quiz | Thikana Estates</title>
+<meta name="description" content="Guides to Lahore areas with average price per marla, listings and highlights, plus a 4-question quiz that recommends the best areas for you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect width='36' height='36' rx='8' fill='%231f3d2f'/%3E%3Cpath d='M6 18L18 8l12 10M10 17v12h16V17' fill='none' stroke='%23d4b67d' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<noscript><p style="padding:24px">Please turn on JavaScript to see our area guides.</p></noscript>
+<main id="main">
+  <div class="wrap">
+    <div class="page-head">
+      <p class="eyebrow">Area guides</p>
+      <h1>Know the neighbourhood before you visit</h1>
+      <p class="lead">Average prices come from the live listings on this website. Not sure where to look? <a href="#quiz" class="link-arrow">Take the Area Match quiz</a></p>
+    </div>
+
+    <section class="quiz-box" id="quiz" aria-labelledby="quizTitle">
+      <div class="quiz-head"><p class="eyebrow">Area Match</p><h2 id="quizTitle">Which Lahore area suits you?</h2></div>
+      <div id="quizBody"></div>
+    </section>
+
+    <section class="section-tight">
+      <div class="sec-head"><h2>All areas</h2>
+        <label class="sort"><span>Sort</span><select id="aSort">
+          <option value="name">A to Z</option><option value="count">Most listings</option><option value="cheap">Lowest price per marla</option><option value="dear">Highest price per marla</option>
+        </select></label>
+      </div>
+      <div class="area-grid" id="areaGrid"></div>
+    </section>
+  </div>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/sample-gen.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/art.js"></script>
+<script src="js/common.js"></script>
+<script src="js/api.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/areas.js"></script>
+</body>
+</html>

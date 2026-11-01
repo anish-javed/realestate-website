@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About and contact | Thikana Estates</title>
+<meta name="description" content="About Thikana Estates, a demo real estate agency in Lahore. Ask a question or ask to be told about new homes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect width='36' height='36' rx='8' fill='%231f3d2f'/%3E%3Cpath d='M6 18L18 8l12 10M10 17v12h16V17' fill='none' stroke='%23d4b67d' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<noscript><p style="padding:24px">Please turn on JavaScript to use this page.</p></noscript>
+<main id="main">
+  <div class="wrap">
+    <div class="page-head">
+      <p class="eyebrow">About &amp; Contact</p>
+      <h1>A small team that likes straight answers</h1>
+      <p class="lead">Thikana means a place to belong. We help Lahore families buy, rent and sell with honest prices and quick replies.</p>
+    </div>
+
+    <section class="about-grid">
+      <div class="about-copy reveal">
+        <h2>Our story</h2>
+        <p>Thikana Estates started with a simple idea: finding a home should not mean ten phone calls to learn one price. So every listing here shows its price per marla, its size in marla and square feet, and how that price compares with similar homes.</p>
+        <p>We check the homes we mark as Verified, we take down homes the moment they are sold, and we never share your phone number. Your location stays on your own phone or computer.</p>
+        <div class="values">
+          <div><div class="v-art" id="vA"></div><b>Honest prices</b><span>Every price is compared with real listings.</span></div>
+          <div><div class="v-art" id="vB"></div><b>Fast replies</b><span>Most messages are answered the same day on WhatsApp.</span></div>
+          <div><div class="v-art" id="vC"></div><b>Your privacy</b><span>No tracking of your position, no selling your data.</span></div>
+        </div>
+      </div>
+      <aside class="panel-card contact-card reveal" id="contactCard">
+        <h2>Visit or call</h2>
+        <ul class="contact-list">
+          <li><span>Phone</span><b id="cPhone"></b></li>
+          <li><span>WhatsApp</span><a id="cWa" class="link-arrow" target="_blank" rel="noopener">Message us</a></li>
+          <li><span>Office</span><b id="cAddr"></b></li>
+          <li><span>Hours</span><b id="cHours"></b></li>
+        </ul>
+        <p class="small">This is a demo website. The phone number and address are placeholders and the listings are fictional.</p>
+      </aside>
+    </section>
+
+    <section class="section-tight">
+      <div class="tool-grid">
+        <div class="panel-card" id="contactFormCard">
+          <h2>Ask us anything</h2>
+          <p class="muted">Send a question, or ask us to tell you when matching homes arrive. We will reply on the phone number you give.</p>
+          <form id="cForm" novalidate>
+            <div class="field"><span>I want to</span>
+              <div class="seg seg-wide"><label><input type="radio" name="kind" value="Question" checked><span>Ask a question</span></label><label><input type="radio" name="kind" value="Alert"><span>Hear about new homes</span></label></div>
+            </div>
+            <label class="field"><span>Your name</span><input name="name" type="text" maxlength="60" autocomplete="name"></label>
+            <label class="field"><span>Mobile number</span><input name="phone" type="tel" placeholder="03XX-XXXXXXX"></label>
+            <label class="field"><span>Email <i>(optional)</i></span><input name="email" type="email" maxlength="80" autocomplete="email"></label>
+            <div id="alertExtra" hidden>
+              <div class="two-in">
+                <label class="field"><span>Buy or rent</span><select name="apurpose"><option value="Sale">Buy</option><option value="Rent">Rent</option></select></label>
+                <label class="field"><span>Type</span><select name="atype" id="aType"><option value="">Any type</option></select></label>
+              </div>
+              <div class="two-in">
+                <label class="field"><span>Area</span><select name="aarea" id="aArea"><option value="">Any area</option></select></label>
+                <label class="field"><span>Budget up to</span><input name="abudget" type="text" inputmode="decimal" placeholder="e.g. 3 cr" autocomplete="off"></label>
+              </div>
+            </div>
+            <label class="field"><span id="msgLbl">Your question</span><textarea name="notes" rows="3" maxlength="500"></textarea></label>
+            <div class="hp" aria-hidden="true"><label>Leave this empty <input name="hp" tabindex="-1" autocomplete="off"></label></div>
+            <div class="actions"><button class="btn btn-primary btn-big" type="submit">Send</button></div>
+          </form>
+        </div>
+        <div class="panel-card">
+          <h2>Good to know</h2>
+          <details><summary>Is my location shared?</summary><p>No. Your position is worked out in your own browser, rounded, and kept there. It is never sent to us or written in any sheet.</p></details>
+          <details><summary>Where are my saved homes kept?</summary><p>Only in this browser on this device. If you clear your browser data they are gone, so use the same device when you come back.</p></details>
+          <details><summary>How is a price insight worked out?</summary><p>We compare the price per marla with the middle price of similar listings (same purpose and type, same area when there are enough). It is a guide, not a valuation.</p></details>
+          <details><summary>Do you charge to list my property?</summary><p>This is a demo website, so there are no real fees. A real agency would explain its commission clearly before you sign anything.</p></details>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/sample-gen.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/art.js"></script>
+<script src="js/common.js"></script>
+<script src="js/api.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/about.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saved homes and searches | Thikana Estates</title>
+<meta name="description" content="Your saved homes, saved searches, price-drop alerts and compare list. Kept in your own browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect width='36' height='36' rx='8' fill='%231f3d2f'/%3E%3Cpath d='M6 18L18 8l12 10M10 17v12h16V17' fill='none' stroke='%23d4b67d' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<noscript><p style="padding:24px">Please turn on JavaScript to see your saved homes.</p></noscript>
+<main id="main">
+  <div class="wrap">
+    <div class="page-head">
+      <p class="eyebrow">Your shortlist</p>
+      <h1>Saved homes &amp; searches</h1>
+      <p class="lead">Everything here is kept in this browser only. We never send it anywhere.</p>
+    </div>
+
+    <div class="sum-tiles" id="tiles"></div>
+    <div id="alerts"></div>
+
+    <section class="section-tight">
+      <div class="sec-head"><h2>Saved homes</h2></div>
+      <div class="grid-cards" id="favGrid"></div>
+      <div class="state-card" id="favEmpty" hidden>
+        <div class="state-art" id="favArt"></div>
+        <h2>No saved homes yet</h2>
+        <p>Tap the heart on any home to keep it here. We will tell you if its price drops.</p>
+        <a class="btn btn-primary" href="browse.html">Browse homes</a>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="sec-head"><h2>Saved searches</h2></div>
+      <div id="searchList"></div>
+    </section>
+
+    <section class="section-tight" id="compareSection">
+      <div class="sec-head"><h2>Compare</h2><button class="link-btn" id="clearCmp" type="button" hidden>Clear compare list</button></div>
+      <div id="compareBody"></div>
+    </section>
+
+    <section class="section-tight" id="recentSection" hidden>
+      <div class="sec-head"><h2>Recently viewed</h2></div>
+      <div class="grid-cards" id="recentGrid"></div>
+    </section>
+  </div>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/sample-gen.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/art.js"></script>
+<script src="js/common.js"></script>
+<script src="js/api.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/saved.js"></script>
+</body>
+</html>

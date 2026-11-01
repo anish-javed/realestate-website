@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thikana Estates | Homes, plots and rentals in Lahore</title>
+<meta name="description" content="Find homes, plots and rentals in Lahore sorted by distance from you. Honest prices, verified listings and quick WhatsApp replies. Demo website with fictional listings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect width='36' height='36' rx='8' fill='%231f3d2f'/%3E%3Cpath d='M6 18L18 8l12 10M10 17v12h16V17' fill='none' stroke='%23d4b67d' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<noscript><p style="padding:24px">Please turn on JavaScript to see our listings.</p></noscript>
+<main id="main">
+  <section class="hero" id="hero">
+    <div class="hero-bp" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Lahore &middot; Homes &middot; Plots &middot; Rentals</p>
+        <h1>Find a <em>thikana</em> that feels like home.</h1>
+        <p class="lead">Honest prices, verified listings and a team that answers on WhatsApp. See what is close to you first.</p>
+        <form class="quick" id="quick" autocomplete="off">
+          <div class="seg" role="radiogroup" aria-label="Buy or rent">
+            <label><input type="radio" name="purpose" value="Sale" checked><span>Buy</span></label>
+            <label><input type="radio" name="purpose" value="Rent"><span>Rent</span></label>
+          </div>
+          <label class="q-field"><span>Area</span><select name="area" id="qArea"><option value="">All areas</option></select></label>
+          <label class="q-field"><span>Type</span><select name="type" id="qType"><option value="">Any type</option></select></label>
+          <label class="q-field"><span>Budget</span><select name="budget" id="qBudget"></select></label>
+          <button class="btn btn-brass btn-big" type="submit">Search homes</button>
+        </form>
+      </div>
+      <div class="hero-art" aria-hidden="true" id="heroArt"></div>
+    </div>
+    <div class="hero-skyline" id="heroSkyline"></div>
+  </section>
+
+  <div class="wrap">
+    <div id="welcome"></div>
+    <div id="geoBanner" class="section-tight"></div>
+
+    <section class="section" id="nearSection" hidden>
+      <div class="sec-head"><div><p class="eyebrow">Near you</p><h2 id="nearTitle">Homes close to you</h2></div><a class="link-arrow" href="browse.html">See all homes</a></div>
+      <div class="row-scroll" id="nearRow"></div>
+    </section>
+
+    <section class="section">
+      <div class="sec-head"><div><p class="eyebrow">Hand-picked</p><h2>Featured homes</h2></div><a class="link-arrow" href="browse.html">Browse all</a></div>
+      <div class="grid-cards" id="featRow"></div>
+    </section>
+
+    <section class="section">
+      <div class="sec-head"><div><p class="eyebrow">Fresh listings</p><h2 id="newTitle">New this week</h2></div><a class="link-arrow" href="browse.html?fresh=1">See all new homes</a></div>
+      <div class="grid-cards" id="newRow"></div>
+    </section>
+  </div>
+
+  <section class="band">
+    <div class="wrap stats" id="stats"></div>
+  </section>
+
+  <div class="wrap">
+    <section class="section">
+      <div class="sec-head"><div><p class="eyebrow">Plan with confidence</p><h2>Two free tools</h2></div></div>
+      <div class="tool-cards">
+        <a class="tool-card reveal" href="areas.html#quiz"><div class="tc-art" id="tcQuiz"></div><h3>Area Match quiz</h3><p>Answer 4 quick questions and we suggest the 3 best Lahore areas for you.</p><span class="link-arrow">Take the quiz</span></a>
+        <a class="tool-card reveal" href="tools.html#value"><div class="tc-art" id="tcValue"></div><h3>Value my property</h3><p>See an indicative price range from real listings in your area.</p><span class="link-arrow">Get an estimate</span></a>
+        <a class="tool-card reveal" href="tools.html#instalment"><div class="tc-art" id="tcEmi"></div><h3>Instalment calculator</h3><p>Check the monthly instalment before you fall in love with a house.</p><span class="link-arrow">Calculate</span></a>
+      </div>
+    </section>
+
+    <section class="section why">
+      <div class="sec-head"><div><p class="eyebrow">Why people come back</p><h2>Built to be kind to your time</h2></div></div>
+      <div class="why-grid">
+        <div class="why-item reveal"><div class="why-art" id="whyA"></div><h3>Price insight on every home</h3><p>We compare each price with similar homes, so you know if it is fair before you call.</p></div>
+        <div class="why-item reveal"><div class="why-art" id="whyB"></div><h3>Save, compare, get alerts</h3><p>Heart a home and we will show you if the price drops. Compare up to 3 side by side.</p></div>
+        <div class="why-item reveal"><div class="why-art" id="whyC"></div><h3>Your privacy stays with you</h3><p>Your location never leaves your browser. We only keep what you send us on a form.</p></div>
+      </div>
+    </section>
+
+    <section class="cta-band reveal">
+      <div><h2>Selling or renting out a property?</h2><p>List it with us. We collect photos on WhatsApp and handle the viewings.</p></div>
+      <a class="btn btn-brass btn-big" href="list.html">List your property</a>
+    </section>
+  </div>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/sample-gen.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/art.js"></script>
+<script src="js/common.js"></script>
+<script src="js/api.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Browse homes in Lahore | Thikana Estates</title>
+<meta name="description" content="Browse homes, plots and rentals in Lahore as a list or on a map. Filter by price, size, bedrooms and area. Nearest first.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect width='36' height='36' rx='8' fill='%231f3d2f'/%3E%3Cpath d='M6 18L18 8l12 10M10 17v12h16V17' fill='none' stroke='%23d4b67d' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<noscript><p style="padding:24px">Please turn on JavaScript to see our listings.</p></noscript>
+<main id="main">
+  <div class="wrap">
+    <div class="page-head">
+      <p class="eyebrow">Browse</p>
+      <h1>Find your next home</h1>
+    </div>
+    <div id="geoBanner" class="section-tight"></div>
+
+    <div class="browse-layout">
+      <aside class="filters" id="filters" aria-label="Filters">
+        <div class="filters-head">
+          <h2>Filters</h2>
+          <button class="link-btn" id="resetBtn" type="button">Reset all</button>
+          <button class="btn btn-small btn-primary close-filters" id="closeFilters" type="button">Show <span id="closeCount"></span> homes</button>
+        </div>
+
+        <div class="f-group">
+          <div class="seg seg-wide" role="radiogroup" aria-label="Buy or rent" id="fPurpose">
+            <label><input type="radio" name="fp" value="Sale"><span>Buy</span></label>
+            <label><input type="radio" name="fp" value="Rent"><span>Rent</span></label>
+          </div>
+        </div>
+        <div class="f-group"><h3>Property type</h3><div class="chips" id="fTypes"></div></div>
+
+        <div class="f-group">
+          <h3>Price <small id="priceLabel"></small></h3>
+          <div class="two-in">
+            <label><span>Min</span><input type="text" id="pMin" inputmode="decimal" placeholder="e.g. 50 lakh" autocomplete="off"></label>
+            <label><span>Max</span><input type="text" id="pMax" inputmode="decimal" placeholder="e.g. 2.5 cr" autocomplete="off"></label>
+          </div>
+          <input type="range" id="pRange" min="0" max="12" step="1" aria-label="Maximum price">
+          <div class="chips" id="pPresets"></div>
+        </div>
+
+        <div class="f-group">
+          <h3>Size</h3>
+          <div class="chips" id="fSizes"></div>
+          <div class="two-in">
+            <label><span>Min marla</span><input type="number" id="sMin" min="0" step="0.5" placeholder="any"></label>
+            <label><span>Max marla</span><input type="number" id="sMax" min="0" step="0.5" placeholder="any"></label>
+          </div>
+        </div>
+
+        <div class="f-group"><h3>Bedrooms</h3><div class="chips" id="fBeds"></div></div>
+        <div class="f-group"><h3>Bathrooms</h3><div class="chips" id="fBaths"></div></div>
+        <div class="f-group"><h3>Area <small>(choose one or more)</small></h3><div class="chips" id="fAreas"></div></div>
+
+        <div class="f-group" id="radiusGroup" hidden>
+          <h3>Distance from you <small id="radiusLabel"></small></h3>
+          <input type="range" id="rRange" min="0" max="4" step="1" aria-label="Distance radius">
+          <div class="range-ticks"><span>5 km</span><span>10</span><span>20</span><span>50</span><span>Any</span></div>
+        </div>
+
+        <div class="f-group"><h3>More</h3><div class="toggles" id="fToggles"></div></div>
+      </aside>
+
+      <section class="results" aria-live="polite">
+        <div class="toolbar">
+          <div class="count" id="count"></div>
+          <button class="btn btn-small btn-ghost only-mobile" id="openFilters" type="button">Filters <span id="filterN" class="n-pill" hidden></span></button>
+          <label class="sort"><span>Sort</span><select id="sort"></select></label>
+          <div class="seg" role="radiogroup" aria-label="List or map" id="viewToggle">
+            <label><input type="radio" name="view" value="list" checked><span>List</span></label>
+            <label><input type="radio" name="view" value="map"><span>Map</span></label>
+          </div>
+          <button class="btn btn-small btn-brass" id="saveSearch" type="button">Save this search</button>
+        </div>
+        <div class="active-chips" id="chips"></div>
+
+        <div id="listView">
+          <div class="grid-cards" id="grid"></div>
+          <div class="more-wrap" id="moreWrap"></div>
+          <div class="state-card" id="empty" hidden>
+            <div class="state-art" id="emptyArt"></div>
+            <h2>No homes match yet</h2>
+            <p>Try removing a filter or two. You can also save this search and we will count new matches next time you visit.</p>
+            <button class="btn btn-primary" id="emptyReset" type="button">Reset filters</button>
+          </div>
+        </div>
+        <div id="mapView" hidden>
+          <div id="map" role="application" aria-label="Map of homes"></div>
+          <p class="small">Map data &copy; OpenStreetMap contributors. Pins show the price; green is for sale, terracotta is for rent.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/sample-gen.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/art.js"></script>
+<script src="js/common.js"></script>
+<script src="js/api.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/browse.js"></script>
+</body>
+</html>

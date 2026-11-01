@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>List your property | Thikana Estates</title>
+<meta name="description" content="Sell or rent out your Lahore property with Thikana Estates. Send your details and we collect photos on WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect width='36' height='36' rx='8' fill='%231f3d2f'/%3E%3Cpath d='M6 18L18 8l12 10M10 17v12h16V17' fill='none' stroke='%23d4b67d' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<noscript><p style="padding:24px">Please turn on JavaScript to use this form.</p></noscript>
+<main id="main">
+  <div class="wrap">
+    <div class="page-head">
+      <p class="eyebrow">For owners</p>
+      <h1>List your property with us</h1>
+      <p class="lead">Tell us the basics. We will call you, then collect photos on WhatsApp and take care of viewings.</p>
+    </div>
+
+    <div class="tool-grid">
+      <div class="panel-card" id="listCard">
+        <form id="listForm" novalidate>
+          <label class="field"><span>Owner name</span><input name="name" type="text" maxlength="60" autocomplete="name"></label>
+          <label class="field"><span>Mobile number</span><input name="phone" type="tel" placeholder="03XX-XXXXXXX"></label>
+          <label class="field"><span>Email <i>(optional)</i></span><input name="email" type="email" maxlength="80" autocomplete="email"></label>
+          <div class="field"><span>I want to</span>
+            <div class="seg seg-wide"><label><input type="radio" name="purpose" value="Sale" checked><span>Sell</span></label><label><input type="radio" name="purpose" value="Rent"><span>Rent out</span></label></div>
+          </div>
+          <div class="two-in">
+            <label class="field"><span>Property type</span><select name="ptype" id="lType"></select></label>
+            <label class="field"><span>Area</span><select name="area" id="lArea"></select></label>
+          </div>
+          <div class="three-in">
+            <label class="field"><span>Size</span><input name="size" type="number" min="0.5" step="0.5" value="5" inputmode="decimal"></label>
+            <label class="field"><span>Unit</span><select name="unit" id="lUnit"><option>Marla</option><option>Kanal</option><option>Sq Ft</option></select></label>
+            <label class="field"><span>Bedrooms</span><input name="beds" type="number" min="0" max="20" placeholder="0 for plots"></label>
+          </div>
+          <label class="field"><span id="priceLbl">Expected price</span><input name="price" type="text" inputmode="decimal" placeholder="e.g. 2.5 cr or 85 lakh" autocomplete="off"></label>
+          <label class="field"><span>Address / block</span><input name="address" type="text" maxlength="140" placeholder="Block, street, nearby landmark"></label>
+          <label class="field"><span>Notes <i>(optional)</i></span><textarea name="notes" rows="3" maxlength="500" placeholder="Condition, corner or park facing, papers, anything useful"></textarea></label>
+          <div class="hp" aria-hidden="true"><label>Leave this empty <input name="hp" tabindex="-1" autocomplete="off"></label></div>
+          <p class="small">After you send this, we will show a WhatsApp button so you can send us photos and the details in one message.</p>
+          <div class="actions"><button class="btn btn-primary btn-big" type="submit">Send my details</button></div>
+        </form>
+      </div>
+      <aside class="panel-card steps-card">
+        <h2>How it works</h2>
+        <ol class="steps">
+          <li><b>You send the basics.</b> It takes about two minutes.</li>
+          <li><b>We call you.</b> We agree a fair price using real listings.</li>
+          <li><b>Photos on WhatsApp.</b> Send photos and a short video, and we do the rest.</li>
+          <li><b>We handle viewings.</b> You only meet serious buyers or tenants.</li>
+        </ol>
+        <div class="state-art" id="listArt"></div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/sample-gen.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/art.js"></script>
+<script src="js/common.js"></script>
+<script src="js/api.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/list.js"></script>
+</body>
+</html>

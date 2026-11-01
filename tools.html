@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Value my property and instalment calculator | Thikana Estates</title>
+<meta name="description" content="Get an indicative value for your Lahore property from real listings, and work out your monthly instalment. Estimates only.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect width='36' height='36' rx='8' fill='%231f3d2f'/%3E%3Cpath d='M6 18L18 8l12 10M10 17v12h16V17' fill='none' stroke='%23d4b67d' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<noscript><p style="padding:24px">Please turn on JavaScript to use the tools.</p></noscript>
+<main id="main">
+  <div class="wrap">
+    <div class="page-head">
+      <p class="eyebrow">Tools</p>
+      <h1>Numbers you can plan with</h1>
+      <p class="lead">Both tools give estimates only. For a firm opinion, talk to us.</p>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Tools">
+      <button role="tab" class="tab on" id="tabValue" data-tab="value" aria-selected="true" aria-controls="panelValue">Value my property</button>
+      <button role="tab" class="tab" id="tabEmi" data-tab="instalment" aria-selected="false" aria-controls="panelEmi">Instalment calculator</button>
+    </div>
+
+    <section class="tool-panel" id="panelValue" role="tabpanel" aria-labelledby="tabValue">
+      <div class="tool-grid">
+        <form class="panel-card" id="valForm" novalidate>
+          <h2>Value my property</h2>
+          <p class="muted">Tell us about the property. We compare it with similar homes listed on this website.</p>
+          <div class="field"><span>I want to</span>
+            <div class="seg seg-wide"><label><input type="radio" name="purpose" value="Sale" checked><span>Sell</span></label><label><input type="radio" name="purpose" value="Rent"><span>Rent out</span></label></div>
+          </div>
+          <label class="field"><span>Property type</span><select name="ptype" id="vType"></select></label>
+          <label class="field"><span>Area</span><select name="area" id="vArea"></select></label>
+          <div class="two-in">
+            <label class="field"><span>Size</span><input name="size" id="vSize" type="number" min="0.5" step="0.5" value="5" inputmode="decimal"></label>
+            <label class="field"><span>Unit</span><select name="unit" id="vUnit"><option>Marla</option><option>Kanal</option><option>Sq Ft</option></select></label>
+          </div>
+          <div class="actions"><button class="btn btn-primary btn-big" type="submit">Show estimate</button></div>
+        </form>
+        <div>
+          <div class="panel-card result-card" id="valResult"><div class="state-art" id="valArt"></div><p class="muted">Your estimate will appear here.</p></div>
+          <div class="panel-card" id="valLead" hidden></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tool-panel" id="panelEmi" role="tabpanel" aria-labelledby="tabEmi" hidden>
+      <div class="tool-grid">
+        <form class="panel-card" id="emiForm" novalidate onsubmit="return false">
+          <h2>Instalment calculator</h2>
+          <p class="muted">Works out a monthly instalment on a fixed rate. Defaults come from our usual terms.</p>
+          <label class="field"><span>Property price</span><input id="ePrice" type="text" inputmode="decimal" placeholder="e.g. 2.5 cr or 25000000" value="25000000" autocomplete="off"></label>
+          <div class="field"><span>Down payment: <b id="eDownLbl"></b></span><input id="eDown" type="range" min="0" max="90" step="1"></div>
+          <div class="two-in">
+            <label class="field"><span>Annual rate (%)</span><input id="eRate" type="number" min="0" max="60" step="0.5"></label>
+            <label class="field"><span>Years</span><input id="eYears" type="number" min="1" max="30" step="1"></label>
+          </div>
+        </form>
+        <div class="panel-card result-card" id="emiResult"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/sample-gen.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/art.js"></script>
+<script src="js/common.js"></script>
+<script src="js/api.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/tools.js"></script>
+</body>
+</html>
