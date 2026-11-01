@@ -1,9 +1,9 @@
 /* About and contact: a question, or a request to hear about new homes (saved as Question / Alert leads) */
 TE.boot("about", function (data) {
   var $ = TE.$, set = data.settings, f = $("#cForm");
-  $("#vA").innerHTML = TE.art.houseOutline("House");
-  $("#vB").innerHTML = TE.art.houseOutline("Commercial");
-  $("#vC").innerHTML = TE.art.houseOutline("Farmhouse");
+  $("#vA").innerHTML = TE.art.icon("Tag");
+  $("#vB").innerHTML = TE.art.icon("Chat");
+  $("#vC").innerHTML = TE.art.icon("Shield");
   $("#cPhone").textContent = set.phone;
   $("#cAddr").textContent = set.address;
   $("#cHours").innerHTML = set.hours.map(TE.esc).join("<br>");

@@ -257,6 +257,296 @@ function TE_sample(todayYmd) {
 // ============ GENERATOR END ============
 
 /* ------------------------------------------------------------------ */
+/*  Extra areas, extra houses and sample photos                         */
+/*  Run each of these ONCE from the Apps Script editor, in this order:  */
+/*  addNewAreas, then addMoreHouses, then addSamplePhotos.              */
+/*  Each one checks the sheet first, so running it twice is harmless.   */
+/* ------------------------------------------------------------------ */
+
+var TE_NEW_AREAS = [
+  { name: 'Samanabad', lat: 31.5346, lng: 74.2941, house: 22000000, plot: 15000000, rent: 70000, fam: 4, bud: 4, inv: 3, cen: 5,
+    desc: 'An old, well-established area with schools, family homes and busy local markets. Doongi Ground and Multan Road are close, so it suits families who want a settled neighbourhood in the middle of the city.',
+    hl: 'Old established area, Schools nearby, Doongi Ground, Multan Road access',
+    blocks: ['Block A', 'Block C', 'Block F', 'Doongi Ground Road', 'Multan Road'] },
+  { name: 'Allama Iqbal Town', lat: 31.5111, lng: 74.2839, house: 25000000, plot: 17000000, rent: 80000, fam: 5, bud: 3, inv: 3, cen: 4,
+    desc: 'A popular, well-planned town with lively markets. Families like it for the schools and colleges and for everyday shopping at Karim Block and Moon Market.',
+    hl: 'Karim Block Market, Moon Market, Schools and colleges, Busy family neighbourhood',
+    blocks: ['Karim Block', 'Gulshan Block', 'Hunza Block', 'Nishtar Block', 'Zeenat Block'] },
+  { name: 'Sodiwal', lat: 31.5360, lng: 74.2750, house: 14000000, plot: 9500000, rent: 45000, fam: 3, bud: 5, inv: 3, cen: 4,
+    desc: 'An affordable area right next to Samanabad with direct access to Multan Road. A good pick for first-time buyers and for tenants on a budget.',
+    hl: 'Affordable prices, Multan Road access, Close to Samanabad, Local markets',
+    blocks: ['Block A', 'Block B', 'Block C', 'Sodiwal Main Road'] }
+];
+
+// Six listings for each new area. Three plans, so the areas do not look copied.
+var TE_NEW_PLANS = [
+  [['Sale', 'House', 3], ['Sale', 'House', 5], ['Sale', 'House', 10], ['Rent', 'House', 5], ['Sale', 'Plot', 5], ['Sale', 'Flat', 950]],
+  [['Sale', 'House', 5], ['Sale', 'House', 7], ['Sale', 'House', 10], ['Rent', 'House', 7], ['Sale', 'Plot', 7], ['Rent', 'Flat', 850]],
+  [['Sale', 'House', 3], ['Sale', 'House', 5], ['Sale', 'House', 7], ['Rent', 'House', 10], ['Sale', 'Plot', 10], ['Sale', 'Flat', 1100]]
+];
+
+function TE_tools_(rnd) {
+  var T = { rnd: rnd };
+  T.pick = function (arr) { return arr[Math.floor(rnd() * arr.length)]; };
+  T.chance = function (p) { return rnd() < p; };
+  T.some = function (pool, n) {
+    var copy = pool.slice(), out = [];
+    while (out.length < n && copy.length) out.push(copy.splice(Math.floor(rnd() * copy.length), 1)[0]);
+    return out;
+  };
+  T.roundTo = function (v, step) { return Math.round(v / step) * step; };
+  T.roundPrice = function (v, purpose) {
+    if (purpose === 'Rent') return T.roundTo(v, v < 100000 ? 2500 : 5000);
+    return v < 50000000 ? T.roundTo(v, 100000) : T.roundTo(v, 500000);
+  };
+  T.scale = function (m, exp) { return Math.pow(m / 5, exp); };
+  T.sizeText = function (marla) { return marla >= 20 && marla % 20 === 0 ? (marla / 20) + ' Kanal' : marla + ' Marla'; };
+  return T;
+}
+
+// Builds ONE listing the same way the main generator does. spec = [purpose, type, marla (or sq ft for a flat)].
+function TE_makeListing_(T, A, spec, id, todayYmd) {
+  var purpose = spec[0], type = spec[1], marla, sizeValue, sizeUnit;
+  if (type === 'Flat') { sizeUnit = 'Sq Ft'; sizeValue = spec[2]; marla = sizeValue / 272.25; }
+  else if (spec[2] >= 20) { marla = spec[2]; sizeUnit = 'Kanal'; sizeValue = marla / 20; }
+  else { marla = spec[2]; sizeUnit = 'Marla'; sizeValue = marla; }
+
+  var base;
+  if (type === 'House') base = purpose === 'Sale' ? A.house * T.scale(marla, 0.92) : A.rent * T.scale(marla, 0.7);
+  else if (type === 'Plot') base = A.plot * T.scale(marla, 0.95);
+  else base = purpose === 'Sale' ? A.house * 0.38 * (sizeValue / 1100) : A.rent * 0.4 * (sizeValue / 1100);
+  var price = T.roundPrice(base * (0.9 + T.rnd() * 0.22), purpose), oldPrice = '';
+  if (T.chance(0.26)) {
+    oldPrice = T.roundPrice(price * (1.05 + T.rnd() * 0.08), purpose);
+    if (oldPrice <= price) oldPrice = price + (purpose === 'Rent' ? 5000 : 100000);
+  }
+
+  var beds = '', baths = '', floors = '';
+  if (type === 'House') {
+    var bmap = { 3: [2, 3], 5: [3, 4], 7: [4, 5], 8: [4, 5], 10: [5, 6], 20: [5, 7], 40: [6, 8] }, br = bmap[marla] || [3, 4];
+    beds = br[0] + Math.floor(T.rnd() * (br[1] - br[0] + 1));
+    baths = Math.max(1, beds - (T.chance(0.35) ? 1 : 0));
+    floors = marla <= 5 ? T.pick([1, 2, 2, 2]) : T.pick([1, 2, 2, 3]);
+  } else if (type === 'Flat') {
+    beds = sizeValue < 800 ? 1 : (sizeValue < 1100 ? 2 : (sizeValue < 1600 ? 3 : 4));
+    baths = beds <= 1 ? 1 : beds - (T.chance(0.4) ? 1 : 0);
+  }
+
+  var furnished = type === 'Plot' ? 'No' : (purpose === 'Rent' ? (T.chance(0.35) ? 'Yes' : 'No') : (T.chance(0.08) ? 'Yes' : 'No'));
+  var ready = type === 'Plot' ? (T.chance(0.5) ? 'Yes' : 'No') : (T.chance(0.7) ? 'Yes' : 'No');
+  var verified = T.chance(0.55) ? 'Yes' : 'No', featured = T.chance(0.2) ? 'Yes' : 'No';
+  var feats = T.some(TE_POOLS[type], 3 + Math.floor(T.rnd() * 3));
+  if (purpose === 'Sale' && T.chance(0.3)) feats.push('Installments');
+  var corner = feats.indexOf('Corner') > -1;
+
+  var label = type === 'Flat' ? sizeValue + ' Sq Ft' : T.sizeText(marla), adj = T.pick(TE_ADJ), title;
+  if (type === 'House') title = (corner ? 'Corner ' : adj + ' ') + label + ' House ' + (purpose === 'Rent' ? 'for Rent ' : '') + 'in ' + A.name;
+  else if (type === 'Plot') title = label + (corner ? ' Corner' : ' Residential') + ' Plot in ' + A.name;
+  else title = adj + ' ' + beds + '-Bed Apartment ' + (purpose === 'Rent' ? 'for Rent ' : '') + 'in ' + A.name;
+
+  var block = T.pick(A.blocks), addr;
+  if (/Road|Boulevard|Link/.test(block)) addr = 'House ' + (1 + Math.floor(T.rnd() * 90)) + ', ' + block;
+  else addr = block + ', Street ' + (1 + Math.floor(T.rnd() * 30));
+
+  var desc = T.pick(TE_INTRO[type]).replace('{size}', label).replace('{area}', A.name) +
+    ' Features include ' + feats.slice(0, 3).join(', ').toLowerCase() + '. Close to ' + A.hl.split(', ')[0].toLowerCase() + '. ' +
+    T.pick(purpose === 'Sale' ? TE_CLOSE_SALE : TE_CLOSE_RENT);
+
+  var rad = 1000 * Math.sqrt(T.rnd()), ang = T.rnd() * Math.PI * 2; // within about 1 km of the area centre
+  var lat = A.lat + (rad * Math.cos(ang)) / 111320;
+  var lng = A.lng + (rad * Math.sin(ang)) / (111320 * Math.cos(A.lat * Math.PI / 180));
+  var daysAgo = Math.floor(Math.pow(T.rnd(), 1.4) * 45);
+
+  return {
+    id: 'TE-' + id, status: 'Available', purpose: purpose, type: type, title: title, area: A.name, address: addr,
+    lat: Number(lat.toFixed(5)), lng: Number(lng.toFixed(5)), price: price, oldPrice: oldPrice,
+    sizeValue: sizeValue, sizeUnit: sizeUnit, beds: beds, baths: baths, floors: floors,
+    furnished: furnished, ready: ready, features: feats, description: desc, photos: [], video: '',
+    featured: featured, verified: verified, added: TE_ymdMinus(todayYmd, daysAgo)
+  };
+}
+
+// The 6 listings of one new area. Numbers continue from startNum.
+function TE_newAreaListings_(T, A, areaIndex, startNum, todayYmd) {
+  var plan = TE_NEW_PLANS[areaIndex % TE_NEW_PLANS.length];
+  return plan.map(function (spec, k) { return TE_makeListing_(T, A, spec, startNum + k, todayYmd); });
+}
+
+function TE_areaRow_(A) { return [A.name, 'Lahore', A.lat, A.lng, A.desc, A.fam, A.bud, A.inv, A.cen, A.hl]; }
+
+// Used by setup(): the 3 new areas and their 18 listings (numbers start after the first 60).
+function TE_newAreaSample_(startNum, todayYmd) {
+  var T = TE_tools_(TE_rng(20260202)), areas = [], props = [];
+  TE_NEW_AREAS.forEach(function (A, i) {
+    areas.push({ area: A.name, city: 'Lahore', lat: A.lat, lng: A.lng, description: A.desc, family: A.fam, budget: A.bud, investment: A.inv, central: A.cen, highlights: A.hl });
+    props = props.concat(TE_newAreaListings_(T, A, i, startNum + props.length, todayYmd));
+  });
+  return { areas: areas, properties: props };
+}
+
+function propToRow_(p) {
+  return [p.id, p.status, p.purpose, p.type, p.title, p.area, p.address, p.lat, p.lng, p.price, p.oldPrice,
+    p.sizeValue, p.sizeUnit, p.beds, p.baths, p.floors, p.furnished, p.ready, p.features.join(', '), p.description,
+    p.photos.join(', '), p.video, p.featured, p.verified, p.added];
+}
+
+function maxPropNum_(sh) {
+  var last = sh.getLastRow(), max = 1000;
+  if (last > 1) {
+    var ids = sh.getRange(2, 1, last - 1, 1).getValues();
+    for (var i = 0; i < ids.length; i++) {
+      var n = parseInt(String(ids[i][0]).replace(/\D/g, ''), 10);
+      if (!isNaN(n) && n > max) max = n;
+    }
+  }
+  return max;
+}
+
+function appendProps_(sh, props) {
+  if (!props.length) return;
+  var start = sh.getLastRow() + 1;
+  ensureRows_(sh, start + props.length);
+  sh.getRange(start, 1, props.length, PROP_HEADERS.length).setValues(props.map(propToRow_));
+}
+
+function doneMessage_(text) {
+  try { SpreadsheetApp.getActiveSpreadsheet().toast(text, 'Thikana Estates', 8); } catch (err) { /* ignore */ }
+  Logger.log(text);
+}
+
+// 1. Adds Samanabad, Allama Iqbal Town and Sodiwal (and 6 listings each) when they are not there yet.
+function addNewAreas() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var areaSh = ss.getSheetByName(TAB.AREAS), propSh = ss.getSheetByName(TAB.PROPS);
+  if (!areaSh || !propSh) { doneMessage_('Run setup() first: the Areas or Properties tab is missing.'); return; }
+  var haveAreas = {}, haveListings = {};
+  areaSh.getRange(2, 1, Math.max(1, areaSh.getLastRow() - 1), 1).getValues().forEach(function (r) { haveAreas[String(r[0]).trim().toLowerCase()] = true; });
+  var areaCol = colOf_(PROP_HEADERS, 'Area');
+  if (propSh.getLastRow() > 1) {
+    propSh.getRange(2, areaCol, propSh.getLastRow() - 1, 1).getValues().forEach(function (r) { haveListings[String(r[0]).trim().toLowerCase()] = true; });
+  }
+  var T = TE_tools_(TE_rng(20260202)), today = todayPK_(), next = maxPropNum_(propSh) + 1;
+  var newAreaRows = [], newProps = [];
+  TE_NEW_AREAS.forEach(function (A, i) {
+    var key = A.name.toLowerCase();
+    if (!haveAreas[key]) newAreaRows.push(TE_areaRow_(A));
+    if (!haveListings[key]) {
+      var list = TE_newAreaListings_(T, A, i, next, today);
+      next += list.length;
+      newProps = newProps.concat(list);
+    }
+  });
+  if (newAreaRows.length) {
+    var start = areaSh.getLastRow() + 1;
+    ensureRows_(areaSh, start + newAreaRows.length);
+    areaSh.getRange(start, 1, newAreaRows.length, AREA_HEADERS.length).setValues(newAreaRows);
+  }
+  appendProps_(propSh, newProps);
+  SpreadsheetApp.flush();
+  doneMessage_('addNewAreas: added ' + newAreaRows.length + ' areas and ' + newProps.length + ' listings.');
+}
+
+// 2. Gives every area with fewer than 3 houses for sale: 2 houses for sale (5 marla, and 10 marla or 1 kanal) and 1 house for rent.
+function addMoreHouses() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var areaSh = ss.getSheetByName(TAB.AREAS), propSh = ss.getSheetByName(TAB.PROPS);
+  if (!areaSh || !propSh) { doneMessage_('Run setup() first: the Areas or Properties tab is missing.'); return; }
+  var H = PROP_HEADERS, last = propSh.getLastRow();
+  var rows = last > 1 ? propSh.getRange(2, 1, last - 1, H.length).getValues() : [];
+  var cArea = colOf_(H, 'Area') - 1, cType = colOf_(H, 'Type') - 1, cPurpose = colOf_(H, 'Purpose') - 1, cStatus = colOf_(H, 'Status') - 1;
+  var cPrice = colOf_(H, 'Price PKR') - 1, cSize = colOf_(H, 'Size Value') - 1, cUnit = colOf_(H, 'Size Unit') - 1, cTitle = colOf_(H, 'Title') - 1;
+
+  var saleHouses = {}, titles = {}, perMarla = {};
+  rows.forEach(function (r) {
+    var key = String(r[cArea]).trim().toLowerCase();
+    (titles[key] = titles[key] || {})[String(r[cTitle])] = true;
+    if (String(r[cType]) === 'House' && String(r[cPurpose]) === 'Sale') {
+      if (String(r[cStatus]) === 'Available') saleHouses[key] = (saleHouses[key] || 0) + 1;
+      var marla = String(r[cUnit]) === 'Kanal' ? num_(r[cSize], 0) * 20 : num_(r[cSize], 0);
+      if (marla > 0 && num_(r[cPrice], 0) > 0) (perMarla[key] = perMarla[key] || []).push(num_(r[cPrice], 0) / Math.pow(marla / 5, 0.92));
+    }
+  });
+
+  var seed = {};
+  TE_AREA_SEED.concat(TE_NEW_AREAS).forEach(function (A) { seed[A.name.toLowerCase()] = A; });
+  var T = TE_tools_(TE_rng(20260303)), today = todayPK_(), next = maxPropNum_(propSh) + 1;
+  var added = [], skipped = [];
+
+  areaSh.getRange(2, 1, Math.max(1, areaSh.getLastRow() - 1), AREA_HEADERS.length).getValues().forEach(function (ar) {
+    var name = String(ar[0]).trim();
+    if (!name) return;
+    var key = name.toLowerCase();
+    if ((saleHouses[key] || 0) >= 3) return;
+    var A = seed[key];
+    if (!A) { // an area you added yourself: price it from its own houses
+      var list = perMarla[key];
+      if (!list || !list.length) { skipped.push(name); return; }
+      list.sort(function (a, b) { return a - b; });
+      var mid = list[Math.floor(list.length / 2)];
+      A = { name: name, lat: num_(ar[2], 0), lng: num_(ar[3], 0), house: mid, plot: mid * 0.6, rent: mid / 280, hl: String(ar[9] || 'local shops'), blocks: ['Block A', 'Block B', 'Block C'] };
+    }
+    var taken = titles[key] || {};
+    var big = T.pick([10, 10, 20]), rentSize = T.pick([5, 10]);
+    var specs = [['Sale', 'House', 5], ['Sale', 'House', big], ['Rent', 'House', rentSize]];
+    if ((saleHouses[key] || 0) + 2 < 3) specs.push(['Sale', 'House', 7]); // an area with no houses ends up with 3, so a second run adds nothing
+    specs.forEach(function (spec) {
+      var p, tries = 0;
+      do { p = TE_makeListing_(T, A, spec, next, today); tries++; } while (taken[p.title] && tries < 8);
+      taken[p.title] = true;
+      p.area = name; // keep the exact spelling used in the Areas tab
+      next++;
+      added.push(p);
+    });
+    titles[key] = taken;
+  });
+  appendProps_(propSh, added);
+  SpreadsheetApp.flush();
+  doneMessage_('addMoreHouses: added ' + added.length + ' houses.' + (skipped.length ? ' Skipped (no price information): ' + skipped.join(', ') + '.' : ''));
+}
+
+// 3. Fills Photo URLs where the cell is empty. Photos are free Pexels pictures (credit is in the website footer).
+var TE_PHOTOS = {
+  House: [30580640, 7031581, 32666364, 7031406, 1974596, 15422346, 323781, 38035858, 8069214, 12895193, 28449020, 40619540, 35758725],
+  Plot: [15422584, 27062931, 30557705, 32370506, 7793089, 9310734],
+  Flat: [9308434, 18153132, 18587809, 562199, 20538974, 39475721],
+  Commercial: [33719831, 16140813, 31969873],
+  Farmhouse: [18957196, 37288757, 11078416],
+  living: [6980724, 7546648, 276746, 8089172],
+  bedroom: [6903157, 6782479, 39733066, 19980080],
+  kitchen: [7166645, 7195739, 39017406, 20348123]
+};
+
+function photoLink_(id) { return 'https://images.pexels.com/photos/' + id + '/pexels-photo-' + id + '.jpeg?auto=compress&cs=tinysrgb&w=1200'; }
+
+function addSamplePhotos() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet(), sh = ss.getSheetByName(TAB.PROPS);
+  if (!sh || sh.getLastRow() < 2) { doneMessage_('There are no properties yet.'); return; }
+  var H = PROP_HEADERS, n = sh.getLastRow() - 1;
+  var types = sh.getRange(2, colOf_(H, 'Type'), n, 1).getValues();
+  var photoCol = sh.getRange(2, colOf_(H, 'Photo URLs'), n, 1);
+  var cells = photoCol.getValues();
+  var count = {}, filled = 0;
+  function rot(pool, k) { return pool[k % pool.length]; }
+  for (var i = 0; i < n; i++) {
+    if (String(cells[i][0]).trim() !== '') continue; // never touch a cell that already has photos
+    var type = String(types[i][0]).trim();
+    if (!TE_PHOTOS[type]) continue;
+    var k = count[type] || 0, band = Math.floor(k / 4), ids = [rot(TE_PHOTOS[type], k)];
+    count[type] = k + 1;
+    if (type === 'House' || type === 'Farmhouse' || type === 'Flat') {
+      ids.push(rot(TE_PHOTOS.living, k + band));
+      ids.push(rot(TE_PHOTOS.bedroom, k + 2 * band + 1));
+      if (type !== 'Flat') ids.push(rot(TE_PHOTOS.kitchen, k + 3 * band + 2));
+    }
+    cells[i][0] = ids.map(photoLink_).join(', ');
+    filled++;
+  }
+  photoCol.setValues(cells);
+  SpreadsheetApp.flush();
+  doneMessage_('addSamplePhotos: filled photos for ' + filled + ' listings.');
+}
+
+/* ------------------------------------------------------------------ */
 /*  Menu + one-time setup                                              */
 /* ------------------------------------------------------------------ */
 
@@ -270,8 +560,9 @@ function setup() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   ss.setSpreadsheetTimeZone(TZ);
   var sample = TE_sample(todayPK_());
-  setupAreas_(ss, sample.areas);
-  setupProperties_(ss, sample.properties);
+  var extra = TE_newAreaSample_(1 + 1000 + sample.properties.length, todayPK_()); // Samanabad, Allama Iqbal Town and Sodiwal
+  setupAreas_(ss, sample.areas.concat(extra.areas));
+  setupProperties_(ss, sample.properties.concat(extra.properties));
   setupLeads_(ss);
   setupSettings_(ss);
   var blank = ss.getSheetByName('Sheet1');
@@ -329,11 +620,7 @@ function setupProperties_(ss, props) {
   sh.getRange(2, colOf_(H, 'Latitude'), 1999, 2).setNumberFormat('0.00000');
   sh.getRange(2, colOf_(H, 'Price PKR'), 1999, 2).setNumberFormat('#,##0');
   if (sh.getLastRow() <= 1) {
-    var rows = props.map(function (p) {
-      return [p.id, p.status, p.purpose, p.type, p.title, p.area, p.address, p.lat, p.lng, p.price, p.oldPrice,
-        p.sizeValue, p.sizeUnit, p.beds, p.baths, p.floors, p.furnished, p.ready, p.features.join(', '), p.description,
-        p.photos.join(', '), p.video, p.featured, p.verified, p.added];
-    });
+    var rows = props.map(propToRow_);
     sh.getRange(2, 1, rows.length, H.length).setValues(rows);
   }
   function rule(name, values) { sh.getRange(2, colOf_(H, name), 1999, 1).setDataValidation(listRule_(values)); }

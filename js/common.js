@@ -333,7 +333,7 @@
       '<div><h4>Contact</h4><p id="ftContact">0300 0000000<br>Lahore, Pakistan</p><p id="ftHours" class="muted-l"></p></div>' +
       '<div><h4>Your privacy</h4><p class="muted-l">Your location stays in your own browser and is never sent to us. Saved homes and searches are also kept only in your browser.</p></div>' +
       "</div>" +
-      '<div class="wrap foot-base"><p>' + TE.esc(TE.cfg.DEMO_LINE || "") + "</p></div></footer>" +
+      '<div class="wrap foot-base"><p>' + TE.esc(TE.cfg.DEMO_LINE || "") + '</p><p class="credit">Photos: <a href="https://www.pexels.com" target="_blank" rel="noopener">Pexels</a></p></div></footer>' +
       '<a class="wa-float" id="waFloat" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" href="' + TE.esc(TE.waLink("Hello, I have a question about a property.")) + '">' + TE.icon.wa + "<span>Chat on WhatsApp</span></a>" +
       '<div class="cmp-tray" id="cmpTray" hidden></div><div class="toasts" id="toasts" aria-live="polite"></div>');
     TE.$("#burger").addEventListener("click", function () {
@@ -365,7 +365,7 @@
     var main = TE.$("#main");
     var loader = document.createElement("div");
     loader.className = "loader"; loader.id = "loader";
-    loader.innerHTML = TE.art.skyline("loader-sky") + '<p><b>Thikana</b> Estates<br><small>Opening the doors&hellip;</small></p>';
+    loader.innerHTML = '<p><b>Thikana</b> Estates<br><small>Opening the doors&hellip;</small></p><i class="loader-line"></i>';
     document.body.appendChild(loader);
     var t0 = Date.now(), minMs = TE.reduced ? 0 : 700;
     function hideLoader() {
@@ -380,7 +380,7 @@
         TE.reveal(document); TE.rollAll(document);
       }).catch(function () {
         hideLoader();
-        main.innerHTML = '<div class="wrap section"><div class="state-card"><div class="state-art">' + TE.art.houseOutline("House") + "</div>" +
+        main.innerHTML = '<div class="wrap section"><div class="state-card"><div class="state-art">' + TE.art.icon("House") + "</div>" +
           "<h2>We could not reach our listings</h2><p>Please check your internet connection and try again. If it keeps happening, call us or send a WhatsApp message.</p>" +
           '<button class="btn btn-primary" id="retry">Try again</button></div></div>';
         TE.$("#retry").addEventListener("click", function () { location.reload(); });

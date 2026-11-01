@@ -2,17 +2,14 @@
 TE.boot("home", function (data) {
   var $ = TE.$, props = data.props, set = data.settings;
 
-  /* hero: sky that follows the visitor's local time, skyline that builds up, outlines that draw themselves */
+  /* hero: photo with a very subtle time-of-day tint */
   TE.art.mountSky($("#hero"));
-  $("#heroSkyline").innerHTML = TE.art.skyline("");
-  $("#heroArt").innerHTML = '<div class="ho ho1">' + TE.art.houseOutline("House") + '</div><div class="ho ho2">' + TE.art.houseOutline("Flat") +
-    '</div><div class="ho ho3">' + TE.art.houseOutline("Plot") + '</div><p class="ho-cap">Blueprint to doorstep</p>';
-  $("#tcQuiz").innerHTML = TE.art.houseOutline("Plot");
-  $("#tcValue").innerHTML = TE.art.houseOutline("House");
-  $("#tcEmi").innerHTML = TE.art.houseOutline("Commercial");
-  $("#whyA").innerHTML = TE.art.houseOutline("Flat");
-  $("#whyB").innerHTML = TE.art.houseOutline("House");
-  $("#whyC").innerHTML = TE.art.houseOutline("Farmhouse");
+  $("#tcQuiz").innerHTML = TE.art.icon("Compass");
+  $("#tcValue").innerHTML = TE.art.icon("Tag");
+  $("#tcEmi").innerHTML = TE.art.icon("Calc");
+  $("#whyA").innerHTML = TE.art.icon("Chart");
+  $("#whyB").innerHTML = TE.art.icon("Heart");
+  $("#whyC").innerHTML = TE.art.icon("Shield");
 
   /* quick search */
   var form = $("#quick"), qArea = $("#qArea"), qType = $("#qType"), qBudget = $("#qBudget");

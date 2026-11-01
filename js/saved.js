@@ -31,7 +31,7 @@ TE.boot("saved", function (data) {
     });
     $("#favGrid").innerHTML = cards.join("");
     $("#favEmpty").hidden = favIds.length > 0;
-    $("#favArt").innerHTML = TE.art.houseOutline("House");
+    $("#favArt").innerHTML = TE.art.icon("Heart");
 
     /* saved searches: how many homes match now, and how many are new */
     $("#searchList").innerHTML = searches.length ? searches.map(function (s) {

@@ -16,7 +16,7 @@ TE.boot("browse", function (data) {
   $("#fAreas").innerHTML = data.areas.map(function (a) { return chip(TE.esc(a.name), false, 'data-area="' + TE.esc(a.name) + '"'); }).join("");
   var TOGGLES = [["furnished", "Furnished"], ["ready", "Ready to move"], ["verified", "Verified only"], ["dropped", "Price dropped"], ["fresh", "Added in last " + set.newDays + " days"]];
   $("#fToggles").innerHTML = TOGGLES.map(function (t) { return chip(t[1], false, 'data-toggle="' + t[0] + '"'); }).join("");
-  $("#emptyArt").innerHTML = TE.art.houseOutline("House");
+  $("#emptyArt").innerHTML = TE.art.icon("Search");
 
   function sortOptions() {
     var loc = !!TE.geo.get(), cur = S.sort || (loc ? "nearest" : "newest");

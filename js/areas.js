@@ -13,7 +13,7 @@ TE.boot("areas", function (data) {
   function areaCard(a, i) {
     var s = stats[a.name], purpose = s.sale >= s.rent ? "Sale" : "Rent";
     return '<article class="area-card reveal" id="a-' + TE.esc(a.name.replace(/\W+/g, "-").toLowerCase()) + '">' +
-      '<div class="ac-art">' + TE.art.houseOutline(OUTLINES[i % OUTLINES.length]) + "</div>" +
+      '<div class="ac-art">' + TE.art.icon(OUTLINES[i % OUTLINES.length]) + "</div>" +
       "<h3>" + TE.esc(a.name) + "</h3><p class=\"desc\">" + TE.esc(a.desc) + "</p>" +
       '<div class="ac-stats"><div><small>Average price per marla</small><b>' + (s.avgPpm ? TE.fmt.amount(s.avgPpm) : "n/a") + "</b>" + (s.avgPpm ? "<small>" + s.basis + " for sale</small>" : "") + "</div>" +
       "<div><small>Listings</small><b>" + s.count + "</b><small>" + s.sale + " sale &middot; " + s.rent + " rent</small></div></div>" +

@@ -7,7 +7,7 @@ TE.boot("browse", function (data) {
   if (!p) {
     document.title = "Property not found | Thikana Estates";
     var latest = data.props.slice().sort(function (a, b) { return b.added - a.added; }).slice(0, 3);
-    root.innerHTML = '<div class="state-card"><div class="state-art">' + TE.art.houseOutline("House") + "</div><h2>This property is not available any more</h2>" +
+    root.innerHTML = '<div class="state-card"><div class="state-art">' + TE.art.icon("House") + "</div><h2>This property is not available any more</h2>" +
       "<p>It may have been sold or rented, or the link may be wrong. Here are some homes you may like instead.</p>" +
       '<a class="btn btn-primary" href="browse.html">Browse all homes</a></div>' +
       '<div class="grid-cards" style="margin-top:28px">' + latest.map(function (x) { return TE.card(x); }).join("") + "</div>";
@@ -73,7 +73,7 @@ TE.boot("browse", function (data) {
       photos.map(function (u, i) { return '<div class="g-slide" data-i="' + i + '"><img src="' + TE.esc(u) + '" alt="' + TE.esc(p.title) + " photo " + (i + 1) + '" loading="' + (i ? "lazy" : "eager") + '" data-ph="' + TE.esc(p.type + "|" + p.id) + '"></div>'; }).join("") + "</div>" +
       (photos.length > 1 ? '<button class="g-nav prev" aria-label="Previous photo">&#8249;</button><button class="g-nav next" aria-label="Next photo">&#8250;</button>' : "") +
       '<span class="g-count" id="gCount">1 / ' + photos.length + '</span><button class="g-full" id="gFull" aria-label="Open full screen">&#x26F6;</button></div>' +
-      (photos.length > 1 ? '<div class="g-thumbs">' + photos.map(function (u, i) { return '<button class="g-thumb' + (i ? "" : " on") + '" data-i="' + i + '" aria-label="Photo ' + (i + 1) + '"><img src="' + TE.esc(u) + '" alt="" loading="lazy"></button>'; }).join("") + "</div>" : "");
+      (photos.length > 1 ? '<div class="g-thumbs">' + photos.map(function (u, i) { return '<button class="g-thumb' + (i ? "" : " on") + '" data-i="' + i + '" aria-label="Photo ' + (i + 1) + '"><img src="' + TE.esc(u) + '" alt="" loading="lazy" decoding="async" data-ph="' + TE.esc(p.type + "|" + p.id) + '"></button>'; }).join("") + "</div>" : "");
     var track = $("#gTrack");
     function go(i, smooth) {
       idx = (i + photos.length) % photos.length;

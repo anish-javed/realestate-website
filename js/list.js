@@ -1,7 +1,7 @@
 /* List your property: saved as a Sell/List lead */
 TE.boot("list", function (data) {
   var $ = TE.$, f = $("#listForm"), box = $("#listCard");
-  $("#listArt").innerHTML = TE.art.houseOutline("House");
+  $("#listArt").innerHTML = TE.art.icon("House");
   $("#lType").innerHTML = TE.TYPES.map(function (t) { return "<option>" + t + "</option>"; }).join("");
   $("#lArea").innerHTML = data.areas.map(function (a) { return "<option>" + TE.esc(a.name) + "</option>"; }).join("") + "<option>Other</option>";
   TE.phone.attach(f.phone);

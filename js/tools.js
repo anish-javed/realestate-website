@@ -21,7 +21,7 @@ TE.boot("tools", function (data) {
   var f = $("#valForm"), loc = TE.geo.get();
   $("#vType").innerHTML = TE.TYPES.map(function (t) { return "<option>" + t + "</option>"; }).join("");
   $("#vArea").innerHTML = data.areas.map(function (a) { return "<option" + (loc && loc.area === a.name ? " selected" : "") + ">" + TE.esc(a.name) + "</option>"; }).join("");
-  $("#valArt").innerHTML = TE.art.houseOutline("House");
+  $("#valArt").innerHTML = TE.art.icon("Tag");
   $("#vType").addEventListener("change", function () { // flats are usually measured in sq ft
     $("#vUnit").value = this.value === "Flat" ? "Sq Ft" : (this.value === "Farmhouse" ? "Kanal" : "Marla");
     $("#vSize").value = this.value === "Flat" ? 1100 : (this.value === "Farmhouse" ? 1 : 5);
