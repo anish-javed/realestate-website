@@ -546,6 +546,61 @@ function addSamplePhotos() {
   doneMessage_('addSamplePhotos: filled photos for ' + filled + ' listings.');
 }
 
+// 4. Makes the sample cover photo match the size of the house. Run it ONCE after addSamplePhotos.
+//    It only touches links that came from the sample pools above. Your own photo links are never changed.
+var TE_HOUSE_MODEST = [30580640, 7031581, 7031406, 15422346, 8069214, 12895193];
+var TE_HOUSE_GRAND = [32666364, 1974596, 323781, 38035858, 28449020, 40619540, 35758725];
+
+function samplePhotoId_(url) { // the Pexels number when the link is one of our sample photos, otherwise 0
+  var m = String(url).match(/^https?:\/\/images\.pexels\.com\/photos\/(\d+)\//);
+  if (!m) return 0;
+  var id = parseInt(m[1], 10);
+  return TE_SAMPLE_IDS_[id] ? id : 0;
+}
+
+var TE_SAMPLE_IDS_ = (function () {
+  var all = {};
+  Object.keys(TE_PHOTOS).forEach(function (k) { TE_PHOTOS[k].forEach(function (id) { all[id] = true; }); });
+  return all;
+})();
+
+function matchSamplePhotos() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet(), sh = ss.getSheetByName(TAB.PROPS);
+  if (!sh || sh.getLastRow() < 2) { doneMessage_('There are no properties yet.'); return; }
+  var H = PROP_HEADERS, n = sh.getLastRow() - 1;
+  var types = sh.getRange(2, colOf_(H, 'Type'), n, 1).getValues();
+  var sizes = sh.getRange(2, colOf_(H, 'Size Value'), n, 1).getValues();
+  var units = sh.getRange(2, colOf_(H, 'Size Unit'), n, 1).getValues();
+  var photoCol = sh.getRange(2, colOf_(H, 'Photo URLs'), n, 1);
+  var cells = photoCol.getValues();
+  var next = { modest: 0, grand: 0 }, changedHouses = 0, clearedPlots = 0;
+  for (var i = 0; i < n; i++) {
+    var type = String(types[i][0]).trim();
+    if (type !== 'House' && type !== 'Plot') continue;
+    var links = String(cells[i][0]).split(/[,\n]+/).map(function (x) { return x.trim(); }).filter(Boolean);
+    if (!links.length) continue;
+    if (type === 'Plot') { // no sample photo: the website then shows the drawn plot illustration
+      var kept = links.filter(function (u) { return !samplePhotoId_(u); });
+      if (kept.length !== links.length) { cells[i][0] = kept.join(', '); clearedPlots++; }
+      continue;
+    }
+    var cover = samplePhotoId_(links[0]);
+    if (!cover || TE_PHOTOS.House.indexOf(cover) < 0) continue; // the cover is the owner's own photo, or not a house sample
+    var value = num_(sizes[i][0], 0), unit = String(units[i][0]).trim();
+    var marla = unit === 'Kanal' ? value * 20 : (unit === 'Sq Ft' ? value / 272.25 : value);
+    if (marla <= 0) continue;
+    var grand = marla >= 7, pool = grand ? TE_HOUSE_GRAND : TE_HOUSE_MODEST, key = grand ? 'grand' : 'modest';
+    if (pool.indexOf(cover) > -1) continue; // already the right kind of photo
+    links[0] = photoLink_(pool[next[key] % pool.length]);
+    next[key]++;
+    cells[i][0] = links.join(', ');
+    changedHouses++;
+  }
+  photoCol.setValues(cells);
+  SpreadsheetApp.flush();
+  doneMessage_('matchSamplePhotos: changed the cover photo of ' + changedHouses + ' houses and removed the sample photo of ' + clearedPlots + ' plots.');
+}
+
 /* ------------------------------------------------------------------ */
 /*  Menu + one-time setup                                              */
 /* ------------------------------------------------------------------ */

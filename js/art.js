@@ -29,11 +29,32 @@
     ["#e7eadb", "#d3dac4", "#2d5842"],
     ["#eee3d3", "#dfcfb6", "#3a4a3c"]
   ];
+  /* A plot has no building to draw, so it gets a neat survey sketch: boundary, setback line, corner pegs and a small label. */
+  function plotArt(p, gid) {
+    var ink = p[2], pegs = [[118, 200], [146, 108], [270, 100], [298, 196]], g = "", i;
+    for (i = 0; i < pegs.length; i++) {
+      g += '<circle cx="' + pegs[i][0] + '" cy="' + pegs[i][1] + '" r="4.5" fill="#fbf8f1" stroke="' + ink + '" stroke-width="1"/>' +
+        '<circle cx="' + pegs[i][0] + '" cy="' + pegs[i][1] + '" r="1.2" fill="#b08d57"/>';
+    }
+    return '<svg class="ph" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Plot (drawn illustration)">' +
+      '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + p[0] + '"/><stop offset="1" stop-color="' + p[1] + '"/></linearGradient></defs>' +
+      '<rect width="400" height="300" fill="url(#' + gid + ')"/>' +
+      '<g stroke="' + ink + '" stroke-width=".5" opacity=".1"><path d="M0 60 H400 M0 120 H400 M0 180 H400 M0 240 H400 M80 0 V300 M160 0 V300 M240 0 V300 M320 0 V300"/></g>' +
+      '<path d="M118 200 L146 108 L270 100 L298 196 Z" fill="' + ink + '" fill-opacity=".05" stroke="' + ink + '" stroke-width="1.1" stroke-linejoin="round"/>' +
+      '<path d="M130 184 L153 122 L262 116 L286 182 Z" fill="none" stroke="#b08d57" stroke-width=".8" stroke-dasharray="4 4" stroke-linejoin="round"/>' +
+      '<path d="M118 222 H298 M118 217 V227 M298 217 V227" fill="none" stroke="' + ink + '" stroke-width=".8" opacity=".55"/>' +
+      '<path d="M350 62 V36 M345 44 L350 36 L355 44" fill="none" stroke="' + ink + '" stroke-width=".9" stroke-linecap="round" stroke-linejoin="round" opacity=".6"/>' +
+      '<text x="350" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="' + ink + '" opacity=".6">N</text>' +
+      g +
+      '<path d="M184 156 H216" stroke="#b08d57" stroke-width="1.2"/>' +
+      '<text x="200" y="146" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" letter-spacing="4" fill="' + ink + '" opacity=".8">PLOT</text></svg>';
+  }
   art.placeholder = function (type, seed) {
     var n = 0, s = String(seed || type), i;
     for (i = 0; i < s.length; i++) n = (n * 31 + s.charCodeAt(i)) >>> 0;
     var p = PALETTES[n % 3], gid = "pg" + (n % 100000);
     var d = ICONS[type] || ICONS.House;
+    if (type === "Plot") return plotArt(p, gid);
     return '<svg class="ph" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="' + (type || "Property") + ' (photo coming soon)">' +
       '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + p[0] + '"/><stop offset="1" stop-color="' + p[1] + '"/></linearGradient></defs>' +
       '<rect width="400" height="300" fill="url(#' + gid + ')"/>' +
